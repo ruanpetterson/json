@@ -422,7 +422,7 @@ where
         {
             fn write_str(&mut self, s: &str) -> fmt::Result {
                 debug_assert!(self.error.is_none());
-                match format_escaped_str_contents(self.writer, self.formatter, s) {
+                match self.formatter.write_string_fragment(self.writer, s) {
                     Ok(()) => Ok(()),
                     Err(err) => {
                         self.error = Some(err);
@@ -2054,10 +2054,12 @@ where
     F: ?Sized + Formatter,
 {
     tri!(formatter.begin_string(writer));
-    tri!(format_escaped_str_contents(writer, formatter, value));
+    tri!(formatter.write_string_fragment(writer, value));
     formatter.end_string(writer)
 }
 
+#[allow(dead_code)]
+#[deprecated]
 fn format_escaped_str_contents<W, F>(
     writer: &mut W,
     formatter: &mut F,
