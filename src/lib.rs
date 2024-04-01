@@ -56,7 +56,7 @@
 //!
 //! A string of JSON data can be parsed into a `serde_json::Value` by the
 //! [`serde_json::from_str`][from_str] function. There is also [`from_slice`]
-//! for parsing from a byte slice &\[u8\] and [`from_reader`] for parsing from
+//! for parsing from a byte slice `&[u8]` and [`from_reader`] for parsing from
 //! any `io::Read` like a File or a TCP stream.
 //!
 //! ```
@@ -299,7 +299,7 @@
 //! [macro]: crate::json
 //! [`serde-json-core`]: https://github.com/rust-embedded-community/serde-json-core
 
-#![doc(html_root_url = "https://docs.rs/serde_json/1.0.111")]
+#![doc(html_root_url = "https://docs.rs/serde_json/1.0.115")]
 // Ignored clippy lints
 #![allow(
     clippy::collapsible_else_if,
@@ -360,10 +360,13 @@
 #![deny(clippy::question_mark_used)]
 #![allow(non_upper_case_globals)]
 #![deny(missing_docs)]
-#![cfg_attr(not(feature = "std"), no_std)]
+#![no_std]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 extern crate alloc;
+
+#[cfg(feature = "std")]
+extern crate std;
 
 #[cfg(feature = "std")]
 #[cfg_attr(docsrs, doc(cfg(feature = "std")))]

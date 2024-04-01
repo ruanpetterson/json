@@ -5,6 +5,7 @@
     clippy::derive_partial_eq_without_eq,
     clippy::excessive_precision,
     clippy::float_cmp,
+    clippy::incompatible_msrv, // https://github.com/rust-lang/rust-clippy/issues/12257
     clippy::items_after_statements,
     clippy::let_underscore_untyped,
     clippy::shadow_unrelated,
@@ -42,7 +43,6 @@ use std::iter;
 use std::marker::PhantomData;
 use std::mem;
 use std::str::FromStr;
-use std::string::ToString;
 use std::{f32, f64};
 use std::{i16, i32, i64, i8};
 use std::{u16, u32, u64, u8};
@@ -2335,6 +2335,8 @@ fn test_raw_value_in_map_key() {
     #[repr(transparent)]
     struct RawMapKey(RawValue);
 
+    #[allow(unknown_lints)]
+    #[allow(non_local_definitions)] // false positive: https://github.com/rust-lang/rust/issues/121621
     impl<'de> Deserialize<'de> for &'de RawMapKey {
         fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
         where
